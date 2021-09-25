@@ -1,6 +1,5 @@
 package com.venkat.spring.currencyexchangeservice;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;

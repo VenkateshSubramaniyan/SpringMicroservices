@@ -13,11 +13,16 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class CurrencyConversionController {
+	
+	@GetMapping("/hello")
+	public String hello() {
+		return "Hello";
+	}
 
 	@Autowired
-	CurrencyExchangeServiceProxy currExchange;
+	CurrencyExchangeServiceProxy currExchangeProxy;
 	
-	@GetMapping("/currency-converter/from/{from}/to/{to}/{qty}")
+	@GetMapping("/currency-conversion/from/{from}/to/{to}/{qty}")
 	public CurrencyConversionBean  convertCurrency( 
 			@PathVariable String from, 
 			@PathVariable String to, 
@@ -25,8 +30,8 @@ public class CurrencyConversionController {
 		Map <String,String> urivariables = new HashMap<String,String>();
 		urivariables.put("from", from);
 		urivariables.put("to", to);
-		ResponseEntity<CurrencyConversionBean> response= new RestTemplate().getForEntity("http://localhost:8001/currency-exchange/from/{from}/to/{to}", CurrencyConversionBean.class, urivariables);
-		
+		ResponseEntity<CurrencyConversionBean> response= new RestTemplate().getForEntity("http://localhost:8000/currency-exchange/from/{from}/to/{to}", CurrencyConversionBean.class, urivariables);
+		System.err.println("venki test");
 		CurrencyConversionBean bean=response.getBody();
 		bean.setCalculatedAmount(qty.multiply(bean.getConversionMultiple()));
 
@@ -35,13 +40,13 @@ public class CurrencyConversionController {
 		return bean;
 	}
 	
-	@GetMapping("/currency-converter-feign/from/{from}/to/{to}/{qty}")
+	@GetMapping("/currency-conversion-feign/from/{from}/to/{to}/{qty}")
 	public CurrencyConversionBean  convertCurrencyUsingFeign( 
 			@PathVariable String from, 
 			@PathVariable String to, 
 			@PathVariable BigDecimal qty) {
 		
-		CurrencyConversionBean bean= currExchange.retriveExchangeValue(from, to) ;
+		CurrencyConversionBean bean= currExchangeProxy.retriveExchangeValue(from, to) ;
 		bean.setCalculatedAmount(qty.multiply(bean.getConversionMultiple()));
 		
 		return bean;
