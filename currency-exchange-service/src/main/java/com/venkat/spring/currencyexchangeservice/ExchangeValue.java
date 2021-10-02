@@ -22,7 +22,7 @@ public class ExchangeValue {
 	@JsonProperty(value = "to")
 	private String currencyto;
 	private BigDecimal conversionMultiplier;
-	@Transient
+	//@Transient
 	private Integer port;
 	
 	public ExchangeValue() {

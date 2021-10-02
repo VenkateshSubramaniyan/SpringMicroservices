@@ -37,7 +37,7 @@ public class CurrencyExchangeController {
 // 		excValrepo.findAll().stream().forEach(System.err::println);
 		
 //		excVal=new ExchangeValue(1000L, from, to, BigDecimal.valueOf( 65));
-		//excVal.setPort(Integer.parseInt( env.getProperty("server.port")));
+		excVal.setPort(Integer.parseInt( env.getProperty("server.port")));
 		return excVal;
 	}
 }

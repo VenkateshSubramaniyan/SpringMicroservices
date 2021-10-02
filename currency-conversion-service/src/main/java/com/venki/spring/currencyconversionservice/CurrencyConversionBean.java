@@ -13,8 +13,15 @@ public class CurrencyConversionBean {
 	@JsonAlias(value ="conversionMultiplier")
 	private BigDecimal conversionMultiple;
 	private BigDecimal calculatedAmount;
+	private Integer port;
 	public CurrencyConversionBean() {
 
+	}
+	public Integer getPort() {
+		return port;
+	}
+	public void setPort(Integer port) {
+		this.port = port;
 	}
 	public CurrencyConversionBean(Long id, String from, String to, BigDecimal conversionMultiple,
 			BigDecimal calculatedAmount) {
