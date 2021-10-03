@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import io.github.resilience4j.retry.annotation.Retry;
+
 @RestController
 public class CurrencyConversionController {
 	
@@ -40,7 +42,10 @@ public class CurrencyConversionController {
 		return bean;
 	}
 	
+	
+	
 	@GetMapping("/currency-conversion-feign/from/{from}/to/{to}/{qty}")
+	@Retry(name = "currency-exchange",fallbackMethod = "currencyExchangeFallback")
 	public CurrencyConversionBean  convertCurrencyUsingFeign( 
 			@PathVariable String from, 
 			@PathVariable String to, 
@@ -50,6 +55,10 @@ public class CurrencyConversionController {
 		bean.setCalculatedAmount(qty.multiply(bean.getConversionMultiple()));
 		
 		return bean;
+	}
+	
+	public CurrencyConversionBean currencyExchangeFallback(String from, String to,BigDecimal qty, Exception ex ) {
+		return new CurrencyConversionBean(1L, from, to, qty, qty);
 	}
 
 	
